@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연세 신제품 개발 전략 | 인터랙티브 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm & Harmonious (Yonsei Blue, Neutrals, and Product Accents) -->
+    <!-- Application Structure Plan: A single-page, vertical scrolling application with a sticky navigation bar to guide users through a narrative flow: Market Trends -> Target Consumer Analysis -> Proposed Product Solutions -> Go-to-Market Strategy. This structure transforms the linear report into an engaging, explorable journey, allowing users to see the 'why' (market/consumer data) before the 'what' (products), which is more persuasive and easier to digest. -->
+    <!-- Visualization & Content Choices: 
+        - Market Trends: Goal: Inform. Viz: Interactive cards (HTML/CSS). Justification: Engages users immediately with key concepts.
+        - Consumer Needs: Goal: Compare/Inform. Viz: Dynamic Donut Chart (Chart.js) updated by tabs. Justification: Visually compares consumer pain points for different segments, making the data compelling and easy to understand.
+        - Product Concepts: Goal: Organize/Inform. Viz: Expandable cards (HTML/CSS/JS). Justification: Presents a clean overview while allowing users to drill down into detailed product information without leaving the page, preventing information overload.
+        - GTM Strategy: Goal: Inform. Viz: Icon-based summary list (HTML/CSS). Justification: Distills dense text into scannable, memorable points.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8F9FA;
+            color: #343A40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 45vh;
+            }
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .card-expand {
+            transition: all 0.5s ease-in-out;
+        }
+        .content-hidden {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, opacity 0.5s ease-out;
+        }
+        .content-visible {
+            max-height: 1000px; /* Adjust as needed */
+            opacity: 1;
+            transition: max-height 0.7s ease-in, opacity 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Sticky Navigation -->
+    <nav class="sticky-nav bg-white/80 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-extrabold text-xl text-[#003876]">YONSEI</span>
+                    <span class="font-light text-xl text-gray-600 ml-2">STRATEGY</span>
+                </div>
+                <div class="hidden md:flex items-baseline space-x-4">
+                    <a href="#trends" class="text-gray-600 hover:text-[#003876] px-3 py-2 rounded-md text-sm font-medium">시장 트렌드</a>
+                    <a href="#consumers" class="text-gray-600 hover:text-[#003876] px-3 py-2 rounded-md text-sm font-medium">소비자 분석</a>
+                    <a href="#products" class="text-gray-600 hover:text-[#003876] px-3 py-2 rounded-md text-sm font-medium">제품 제안</a>
+                    <a href="#gomarket" class="text-gray-600 hover:text-[#003876] px-3 py-2 rounded-md text-sm font-medium">출시 전략</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <header class="text-center my-12 md:my-20">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">더 나은 삶의 과학, 연세로부터</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                연세 브랜드의 신뢰를 바탕으로, 변화하는 건강 시장의 핵심 트렌드와 소비자 니즈를 관통하는 신제품 개발 전략을 제안합니다.
+            </p>
+        </header>
+
+        <!-- Section 1: Market Trends -->
+        <section id="trends" class="my-16 md:my-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#003876]">시장을 움직이는 3가지 거대한 물결</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">성공적인 제품은 시장의 변화를 읽는 것에서 시작됩니다. 현재 건기식 시장의 패러다임을 바꾸고 있는 핵심 트렌드를 통해 새로운 기회를 발견합니다.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform transform hover:-translate-y-2">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold mb-2">초개인화</h3>
+                    <p class="text-gray-600">온 가족을 위한 제품에서 '나'를 위한 맞춤형 솔루션으로. 소비자는 자신의 건강 고민에 정확히 부합하는 제품을 원합니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform transform hover:-translate-y-2">
+                    <div class="text-4xl mb-4">🔬</div>
+                    <h3 class="text-xl font-bold mb-2">과학적 신뢰성</h3>
+                    <p class="text-gray-600">마케팅보다 데이터. 소비자는 효능을 뒷받침하는 명확한 과학적 근거와 투명한 정보를 요구합니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center transition-transform transform hover:-translate-y-2">
+                    <div class="text-4xl mb-4">💖</div>
+                    <h3 class="text-xl font-bold mb-2">선제적 자기관리</h3>
+                    <p class="text-gray-600">'헬시플레저' 트렌드와 함께, 정신 건강과 이너뷰티를 포함한 적극적인 웰빙 추구가 새로운 표준이 되었습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Consumer Analysis -->
+        <section id="consumers" class="my-16 md:my-24 bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#003876]">데이터로 보는 타겟 고객의 목소리</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">어떤 고객에게 집중해야 할까요? 세대별 건강 고민 데이터를 분석하여 우리가 공략해야 할 핵심 시장과 고객의 진짜 니즈를 파악합니다. 아래 탭을 클릭하여 세대별 분석을 확인해보세요.</p>
+            
+            <div class="flex justify-center border-b mb-8">
+                <button data-target="2030" class="consumer-tab active-tab text-lg font-semibold py-4 px-6 border-b-2 border-[#003876] text-[#003876]">2030세대 (스트레스/수면)</button>
+                <button data-target="mz" class="consumer-tab text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-800">MZ세대 (이너뷰티)</button>
+                <button data-target="all" class="consumer-tab text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-800">전 세대 (눈 건강)</button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="consumerChart"></canvas>
+                </div>
+                <div id="consumer-text-content">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Product Lineup -->
+        <section id="products" class="my-16 md:my-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#003876]">연세의 과학으로 제안하는 3가지 솔루션</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">시장 분석을 통해 도출된 세 가지 핵심 기회에 대응하는 전략 제품 라인업입니다. 각 제품은 명확한 타겟과 기능성을 가지며, 연세의 신뢰를 담았습니다.</p>
+            
+            <div class="space-y-8">
+                <!-- Product 1: Urban Relax -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-expand">
+                    <div class="p-6 md:p-8 cursor-pointer product-header" data-product="relax">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#8A2BE2]">YONSEI URBAN RELAX™</h3>
+                                <p class="text-gray-500">2030 도시인을 위한 24시간 멘탈 웰니스 솔루션</p>
+                            </div>
+                            <span class="mt-2 md:mt-0 text-lg font-bold text-[#8A2BE2]">자세히 보기 ▼</span>
+                        </div>
+                    </div>
+                    <div id="relax-content" class="p-6 md:p-8 border-t border-gray-200 bg-gray-50 content-hidden">
+                        <h4 class="font-bold text-lg mb-4">"낮의 긴장은 풀고, 밤의 휴식은 깊게"</h4>
+                        <p class="mb-6 text-gray-700">스트레스와 수면 부족의 악순환을 끊기 위해, 연세의 과학은 낮과 밤을 모두 케어하는 통합 솔루션을 설계했습니다. L-테아닌이 낮의 긴장을 완화하고, 락티움이 밤의 수면의 질을 높여 당신의 하루를 온전히 지지합니다.</p>
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="font-bold">L-테아닌</p>
+                                <p class="text-sm text-gray-600">스트레스 긴장 완화</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="font-bold">락티움</p>
+                                <p class="text-sm text-gray-600">수면의 질 개선</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="font-bold">마그네슘</p>
+                                <p class="text-sm text-gray-600">신경 및 근육 기능 유지</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2: Luminous Aura -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-expand">
+                    <div class="p-6 md:p-8 cursor-pointer product-header" data-product="aura">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#FF7F50]">YONSEI LUMINOUS AURA™</h3>
+                                <p class="text-gray-500">MZ세대를 위한 과학적 이너뷰티</p>
+                            </div>
+                            <span class="mt-2 md:mt-0 text-lg font-bold text-[#FF7F50]">자세히 보기 ▼</span>
+                        </div>
+                    </div>
+                    <div id="aura-content" class="p-6 md:p-8 border-t border-gray-200 bg-gray-50 content-hidden">
+                        <h4 class="font-bold text-lg mb-4">"먹어서 완성하는 빛나는 피부 광채"</h4>
+                        <p class="mb-6 text-gray-700">'헬시플레저' 트렌드를 선도하는 MZ세대를 위해, 피부 건강의 핵심 성분 4가지를 과학적으로 배합했습니다. 바르는 것을 넘어, 속부터 채우는 진짜 스킨케어를 경험하세요.</p>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                            <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">저분자 콜라겐</p><p class="text-sm text-gray-600">피부 탄력</p></div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">비타민C</p><p class="text-sm text-gray-600">콜라겐 합성 & 항산화</p></div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">히알루론산</p><p class="text-sm text-gray-600">수분 충전</p></div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">글루타치온</p><p class="text-sm text-gray-600">맑은 피부톤</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3: Vision Shield -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-expand">
+                    <div class="p-6 md:p-8 cursor-pointer product-header" data-product="vision">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#20B2AA]">YONSEI VISION SHIELD™</h3>
+                                <p class="text-gray-500">디지털 시대를 위한 3중 눈 건강 보호막</p>
+                            </div>
+                             <span class="mt-2 md:mt-0 text-lg font-bold text-[#20B2AA]">자세히 보기 ▼</span>
+                        </div>
+                    </div>
+                    <div id="vision-content" class="p-6 md:p-8 border-t border-gray-200 bg-gray-50 content-hidden">
+                        <h4 class="font-bold text-lg mb-4">"당신의 소중한 눈, 연세의 기술로 지키세요"</h4>
+                        <p class="mb-6 text-gray-700">전 세대의 가장 큰 건강 고민인 눈 건강. 디지털 기기의 위협으로부터 황반 보호, 안구 건조 개선, 눈 피로도 감소까지, 3가지 핵심 기능을 하나의 포뮬러에 담아 현대인의 눈을 위한 가장 진보된 솔루션을 제공합니다.</p>
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                             <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">루테인/지아잔틴</p><p class="text-sm text-gray-600">황반 보호</p></div>
+                             <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">rTG 오메가-3</p><p class="text-sm text-gray-600">안구 건조 개선</p></div>
+                             <div class="bg-white p-4 rounded-lg shadow-sm"><p class="font-bold">아스타잔틴</p><p class="text-sm text-gray-600">눈 피로도 감소</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Go-to-Market Strategy -->
+        <section id="gomarket" class="my-16 md:my-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#003876]">성공적인 시장 진입을 위한 청사진</h2>
+             <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">최고의 제품은 최고의 전략을 만났을 때 비로소 완성됩니다. 연세의 브랜드 가치를 극대화하고 목표 고객에게 효과적으로 도달하기 위한 핵심 전략입니다.</p>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="text-4xl mb-4">💎</div>
+                    <h3 class="text-xl font-bold mb-2">포뮬러의 탁월성</h3>
+                    <p class="text-gray-600">원산지와 제조 공법이 검증된 프리미엄 원료만을 사용하고, 식약처 기준을 철저히 준수하여 과학적 권위를 증명합니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="text-4xl mb-4">📢</div>
+                    <h3 class="text-xl font-bold mb-2">브랜드 커뮤니케이션</h3>
+                    <p class="text-gray-600">'전문가가 만든 제품'이라는 신뢰감을 바탕으로, 성분 이면의 과학을 알기 쉽게 설명하는 교육적 콘텐츠로 소통합니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="text-4xl mb-4">🛒</div>
+                    <h3 class="text-xl font-bold mb-2">디지털 중심 채널</h3>
+                    <p class="text-gray-600">브랜드 공식몰(D2C)을 중심으로 온라인 시장을 공략하고, H&B 스토어와 전략적 파트너십을 통해 신규 고객을 유입시킵니다.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data Store
+            const consumerData = {
+                '2030': {
+                    labels: ['스트레스/피로', '면역력', '기타'],
+                    data: [65, 20, 15],
+                    backgroundColor: ['#8A2BE2', '#D8BFD8', '#E6E6FA'],
+                    title: '2030세대의 핵심 고충: 스트레스와 피로',
+                    description: "현대 사회의 치열한 경쟁 속에서 2030세대는 만성적인 피로와 스트레스를 가장 큰 건강 문제로 꼽습니다. 이는 단순한 피곤함을 넘어 삶의 질을 저하시키는 핵심적인 고충(Pain Point)이며, 수면 부족으로 이어지는 악순환을 만듭니다. 이들을 위한 통합적인 '멘탈 웰니스' 솔루션 시장의 잠재력은 매우 큽니다."
+                },
+                'mz': {
+                    labels: ['피부/이너뷰티', '체중 관리', '기타'],
+                    data: [55, 30, 15],
+                    backgroundColor: ['#FF7F50', '#FFDAB9', '#FFF0E1'],
+                    title: "MZ세대의 자기관리: '헬시플레저'와 이너뷰티",
+                    description: "'건강을 즐겁게 관리한다'는 헬시플레저 트렌드는 MZ세대의 소비를 주도합니다. 이들에게 건강 관리는 눈에 보이는 효과, 즉 피부 개선과 같은 '이너뷰티'에서 시작됩니다. 2조원 규모로 성장하는 이너뷰티 시장은 이들에게 '새로운 종합비타민'과 같으며, 미래 핵심 고객을 확보할 필수 진입점입니다."
+                },
+                'all': {
+                    labels: ['눈 건강', '관절/뼈 건강', '기타'],
+                    data: [40, 25, 35],
+                    backgroundColor: ['#20B2AA', '#AFEEEE', '#E0FFFF'],
+                    title: "전 세대의 공통 관심사: 눈 건강",
+                    description: "디지털 기기의 일상화로 '눈 건강'은 특정 연령대가 아닌 전 세대에서 가장 우려하는 건강 문제 1위로 부상했습니다. 이는 가장 넓은 소비자층을 포괄할 수 있는 '앵커 제품'의 기회를 의미합니다. 시장의 표준을 넘어, 현대인의 복합적인 눈 문제를 해결하는 토탈 솔루션은 강력한 시장 지배력을 확보할 수 있습니다."
+                }
+            };
+
+            // Chart Initialization
+            const ctx = document.getElementById('consumerChart').getContext('2d');
+            const consumerChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: consumerData['2030'].labels,
+                    datasets: [{
+                        label: '세대별 건강 고민',
+                        data: consumerData['2030'].data,
+                        backgroundColor: consumerData['2030'].backgroundColor,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Consumer Tab Logic
+            const tabs = document.querySelectorAll('.consumer-tab');
+            const textContentDiv = document.getElementById('consumer-text-content');
+
+            function updateContent(target) {
+                const data = consumerData[target];
+                
+                // Update Chart
+                consumerChart.data.labels = data.labels;
+                consumerChart.data.datasets[0].data = data.data;
+                consumerChart.data.datasets[0].backgroundColor = data.backgroundColor;
+                consumerChart.update();
+
+                // Update Text
+                textContentDiv.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4" style="color:${data.backgroundColor[0]}">${data.title}</h3>
+                    <p class="text-gray-700 leading-relaxed">${data.description}</p>
+                `;
+
+                // Update Active Tab
+                tabs.forEach(t => {
+                    t.classList.remove('active-tab', 'text-[#003876]', 'border-[#003876]');
+                    t.classList.add('text-gray-500', 'border-transparent');
+                    if(t.dataset.target === target) {
+                        t.classList.add('active-tab', 'text-[#003876]', 'border-[#003876]');
+                        t.classList.remove('text-gray-500', 'border-transparent');
+                    }
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    updateContent(tab.dataset.target);
+                });
+            });
+
+            // Initial Load
+            updateContent('2030');
+
+            // Product Accordion Logic
+            const productHeaders = document.querySelectorAll('.product-header');
+            productHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const contentId = header.dataset.product + '-content';
+                    const contentElement = document.getElementById(contentId);
+                    const isVisible = !contentElement.classList.contains('content-hidden');
+
+                    // Close all others
+                    document.querySelectorAll('.product-header').forEach(h => {
+                        const c = document.getElementById(h.dataset.product + '-content');
+                        if (c !== contentElement) {
+                            c.classList.add('content-hidden');
+                            c.classList.remove('content-visible');
+                            h.querySelector('span').textContent = '자세히 보기 ▼';
+                        }
+                    });
+
+                    // Toggle current
+                    contentElement.classList.toggle('content-hidden');
+                    contentElement.classList.toggle('content-visible');
+                    header.querySelector('span').textContent = isVisible ? '자세히 보기 ▼' : '간략히 보기 ▲';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
